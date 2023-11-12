@@ -1,25 +1,24 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import NotFound from "./pages/404";
+import LoginPage from "./pages/login/LoginPage";
+import { route } from "./utils/constants";
+import HomePage from "./pages/home";
+import RequireAuth from "./routes/RequireAuth";
+import PublicRoutes from "./routes/PublicRoutes";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <BrowserRouter basename={process.env.PUBLIC_URL}>
+      <Routes>
+        <Route element={<RequireAuth />}>
+          <Route path={route.HOME_PAGE_ROUTE} element={<HomePage />} />
+        </Route>
+        <Route element={<PublicRoutes />}>
+          <Route path={route.LOGIN_PAGE_ROUTE} element={<LoginPage />} />
+        </Route>
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 
